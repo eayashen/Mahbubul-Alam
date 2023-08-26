@@ -162,7 +162,7 @@ const FundingHistory = () => {
     );
 
     return (
-        <div className='md:mx-24 mx-4'>
+        <div className='lg:mx-24 mx-4'>
             {isTableEditing && (
                 <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-25 z-10 flex justify-center items-center">
                     <div className="w-96 h-fit p-4 bg-white text-black rounded space-y-4">
@@ -215,32 +215,35 @@ const FundingHistory = () => {
 
             <p className='text-center font-bold text-2xl my-4'>Funding History</p>
             <div className="text-right mr-10">
-                <p>{`Total amount awarded till date: ${total}$`}</p>
-                <p>{`As Principal Investigator (PI): ${roleSum ? roleSum['Principal Investigator'] ?? 0 : 0}$`}</p>
-                <p>{`As Co-Principal Investigator (Co-PI): ${roleSum ? roleSum['Co-Principal Investigator'] ?? 0 : 0}$`}</p>
-                <p>{`As Co-Investigator (Co-I): ${roleSum ? roleSum['Co-Investigator'] ?? 0 : 0}$`}</p>
+                <p>Total amount awarded till date: <span className='font-medium'>${total}</span></p>
+                <p>As Principal Investigator (PI): <span className='font-medium'>${roleSum ? roleSum['Principal Investigator'] ?? 0 : 0}</span></p>
+                <p>As Co-Principal Investigator (Co-PI): <span className='font-medium'>${roleSum ? roleSum['Co-Principal Investigator'] ?? 0 : 0}</span></p>
+                <p>As Co-Investigator (Co-I): <span className='font-medium'>${roleSum ? roleSum['Co-Investigator'] ?? 0 : 0}</span></p>
             </div>
-            <div className="text-center my-4">
-                <div className="bg-indigo-950 text-white flex text-center p-1">
-                    <p className='w-10'>Year</p>
-                    <p className='flex-1'>Title</p>
-                    <p className='w-40'>Role</p>
-                    <p className='w-20'>Awarded</p>
-                    <p className='w-40'>Time Period</p>
-                    <p className='w-16'>Doner</p>
+            <div className="my-4 overflow-x-auto">
+                <div className={`bg-indigo-950 text-white flex p-1 ${isLoggedIn ? 'min-w-[1096px]' : 'min-w-[1016px]'}`}>
+                    <p className='w-10 px-1'>Year</p>
+                    <p className='flex-1 px-1'>Title</p>
+                    <p className='w-40 px-1'>Role</p>
+                    <p className='w-20 px-1'>Awarded</p>
+                    <p className='w-40 px-1'>Time Period</p>
+                    <p className='w-32 px-1'>Doner</p>
                     {isLoggedIn && (
                         <div className="w-20">Actions</div>
                     )}
                 </div>
+                {isLoggedIn && (
+                    <button onClick={() => setIsTableEditing(true)} className="edit mt-2">+ Add </button>
+                )}
                 {
                     data?.map(d => (
-                        <div className="flex text-center border shadow p-1 my-2" key={Math.random()}>
-                            <p className='w-10'>{d.year}</p>
-                            <p className='flex-1'>{d.title}</p>
-                            <p className='w-40'>{d.role}</p>
-                            <p className='w-20'>{d.awarded_amount}</p>
-                            <p className='w-40'>{d.time_period}</p>
-                            <p className='w-16'>{d.doner}</p>
+                        <div className={`flex border shadow p-1 my-2 ${isLoggedIn ? 'min-w-[1096px]' : 'min-w-[1016px]'}`} key={Math.random()}>
+                            <p className='w-10 px-1'>{d.year}</p>
+                            <p className='flex-1 px-1'>{d.title}</p>
+                            <p className='w-40 px-1'>{d.role}</p>
+                            <p className='w-20 px-1'>${d.awarded_amount}</p>
+                            <p className='w-40 px-1'>{d.time_period}</p>
+                            <p className='w-32 px-1'>{d.doner}</p>
                             {isLoggedIn && (
                                 <div className="flex w-20 gap-4 justify-center items-center">
                                     <button onClick={() => handleUpdate(d)} className="fas fa-edit text-green-500"></button>
@@ -250,9 +253,6 @@ const FundingHistory = () => {
                         </div>
                     ))
                 }
-                {isLoggedIn && (
-                    <button onClick={() => setIsTableEditing(true)} className="edit">ADD</button>
-                )}
             </div>
         </div>
     );

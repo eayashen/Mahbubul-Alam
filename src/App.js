@@ -2,11 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Navbar from './components/Navbar';
 import Home from './components/Home';
-import Research from './components/Research';
 import Journal from './components/Journal';
 import FundingHistory from './components/FundingHistory';
 import Contact from './components/Contact';
 import Login from './components/Login';
+import Research from './components/Research';
 
 const App = () => {
 

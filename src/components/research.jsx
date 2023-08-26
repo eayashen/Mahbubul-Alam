@@ -152,7 +152,8 @@ const Research = () => {
     research_id,
     title,
     published,
-    authors
+    authors,
+    url
   ) => {
     setPublicationEditing((prevData) => ({
       ...prevData,
@@ -161,6 +162,7 @@ const Research = () => {
       title,
       published,
       authors,
+      url
     }));
     setIsPublicationEditing(true);
   };
@@ -183,6 +185,7 @@ const Research = () => {
                   authors: publicationEditing?.authors || "",
                   research_id: publicationEditing?.research_id,
                   id: publicationEditing?.id,
+                  url: publicationEditing?.url
                 },
                 null,
                 2
@@ -282,7 +285,7 @@ const Research = () => {
     );
 
   return (
-    <div className="md:mx-24 mx-4">
+    <div className="lg:mx-24 mx-4">
       {isResearchTitleEditing && (
         <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-25 z-10 flex justify-center items-center">
           <div className="w-96 h-fit p-4 bg-white text-black rounded space-y-4">
@@ -356,24 +359,6 @@ const Research = () => {
         <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-25 z-10 flex justify-center items-center">
           <div className="w-96 h-fit p-4 bg-white text-black rounded space-y-4">
             <div className="space-y-2">
-              {/* <div className="flex">
-                <p className="w-20">Type</p>
-                <select
-                  className="px-1 border rounded flex-1"
-                  onChange={(e) =>
-                    setPublicationEditing({
-                      ...publicationEditing,
-                      publications_type: e.target.value,
-                    })
-                  }
-                  value={publicationEditing?.publications_type || ""}
-                >
-                  <option value="">Select Type</option>
-                  <option value="journal">Journal</option>
-                  <option value="working-paper">Working Paper</option>
-                  <option value="policy">Policy</option>
-                </select>
-              </div> */}
               <div className="flex">
                 <p className="w-20">Title</p>
                 <input
@@ -417,6 +402,21 @@ const Research = () => {
                   }
                   placeholder="Authors"
                   value={publicationEditing?.authors}
+                />
+              </div>
+              <div className="flex">
+                <p className="w-20">Link</p>
+                <input
+                  className="px-2 border rounded flex-1"
+                  type="text"
+                  onChange={(e) =>
+                    setPublicationEditing({
+                      ...publicationEditing,
+                      url: e.target.value,
+                    })
+                  }
+                  placeholder="https://example.com"
+                  value={publicationEditing?.url}
                 />
               </div>
             </div>
@@ -488,7 +488,7 @@ const Research = () => {
               {selectedProject === d.description &&
                 d.publications.map((p) => (
                   <div key={Math.random()} className="border-b mb-4">
-                    <p className="font-semibold">{p.title}</p>
+                    <a href={p.url} target="_blank" rel="noopener noreferrer" className="font-semibold hover:text-teal-500">{p.title}</a>
                     <p>{p.published}</p>
                     <p>{p.authors}</p>
                     {isLoggedIn && (
@@ -500,7 +500,8 @@ const Research = () => {
                               p.research_id,
                               p.title,
                               p.published,
-                              p.authors
+                              p.authors,
+                              p.url
                             )
                           }
                           className="fas fa-edit"
@@ -535,6 +536,12 @@ const Research = () => {
                     onClick={() => handleTitleDelete(d.id)}
                     className="fas fa-trash text-red-500"
                   ></button>
+                  <button
+                    onClick={() => handlePublicationsEdit(d.id)}
+                    className="edit"
+                  >
+                    + Add Publication
+                  </button>
                 </div>
               )}
               <button
@@ -548,7 +555,7 @@ const Research = () => {
               {selectedProject === d.description &&
                 d.publications.map((p) => (
                   <div key={Math.random()} className="border-b mb-4">
-                    <p className="font-semibold">{p.title}</p>
+                    <a href={p.url} target="_blank" rel="noopener noreferrer" className="font-semibold hover:text-teal-500">{p.title}</a>
                     <p>{p.published}</p>
                     <p>{p.authors}</p>
                     {isLoggedIn && (
@@ -560,7 +567,8 @@ const Research = () => {
                               p.research_id,
                               p.title,
                               p.published,
-                              p.authors
+                              p.authors,
+                              p.url
                             )
                           }
                           className="fas fa-edit"

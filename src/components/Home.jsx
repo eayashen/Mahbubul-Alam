@@ -28,6 +28,7 @@ const Home = () => {
             const response = await fetch('https://port.abirmunna.me/api/v1/about');
             const jsonData = await response.json();
             setAbout(jsonData[0])
+            setLoading(false);
         } catch (error) {
             console.log('Error fetching data:', error);
             // setLoading(false);
@@ -35,10 +36,12 @@ const Home = () => {
     };
 
     const fetchDesignation = async () => {
+        setLoading(true);
         try {
             const response = await fetch('https://port.abirmunna.me/api/v1/designation');
             const jsonData = await response.json();
             setDesignation(jsonData)
+            setLoading(false);
         } catch (error) {
             console.log('Error fetching data:', error);
             // setLoading(false);
@@ -46,6 +49,7 @@ const Home = () => {
     };
     
     const fetchAwards = async () => {
+        setLoading(true);
         try {
             const response = await fetch('https://port.abirmunna.me/api/v1/awards');
             const jsonData = await response.json();
@@ -346,7 +350,7 @@ const Home = () => {
     )
 
     return (
-        <div className='mt-4 md:mx-24 mx-4'>
+        <div className='mt-4 lg:mx-24 mx-4'>
             {imageEditing && (
                 <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-25 z-10 flex justify-center items-center">
                     <div className="w-96 h-fit p-4 bg-white text-black rounded space-y-4">
@@ -426,8 +430,9 @@ const Home = () => {
                     <div className="max-w-full w-56 h-64">
                         <img src={profile} alt="profile" className="w-full h-full object-cover"/>
                     </div>
-                    {isLoggedIn && <div onClick={() => setImageEditing(true)} className="fas fa-edit cursor-pointer scale-110 text-green-500"></div>}
+                    {isLoggedIn && <button onClick={() => setImageEditing(true)} className="save text-white">Change Picture</button>}
                     <div className='text-center'><p className='font-bold text-xl'>{about?.name}</p>
+                    {isLoggedIn && <button onClick={() => setIsBioEditing(true)} className="edit">+ Add Designation</button>}
                         {
                             designation?.map((d, index) => (
                                 <div key={d.name}>
@@ -445,7 +450,6 @@ const Home = () => {
                             ))
                         }
                     </div>
-                    {isLoggedIn && <button onClick={() => setIsBioEditing(true)} className="edit">ADD</button>}
                 </div>
 
                 <div className="flex-1">
@@ -458,7 +462,7 @@ const Home = () => {
                     ) : (
                         <div>
                             <p className="text-justify mb-4">{about?.bio}</p>
-                            {isLoggedIn && <button className='border px-4 py-1 mb-4 rounded' onClick={handleEditClick}>Edit</button>}
+                            {isLoggedIn && <button className='save border px-4 py-1 mb-4 rounded' onClick={handleEditClick}>Edit</button>}
                         </div>
                     )}
                     <Carousel selectedItem={activeIndex} onChange={setActiveIndex}>
@@ -480,11 +484,14 @@ const Home = () => {
 
                         </div>
                     </div>
-                    {isLoggedIn && <button onClick={handleCarouselImage} className="edit">ADD</button>}
+                    {isLoggedIn && <button onClick={handleCarouselImage} className="edit">+ Add Pictures</button>}
                 </div>
             </div>
             <div>
                 <p className='w-full text-center py-1 bg-indigo-950 text-white font-semibold mt-4'>Awards</p>
+                {isLoggedIn && (
+                    <button onClick={() => setIsAwardEditing(true)} className="edit mt-2">+ Add Awards</button>
+                )}
                 {
                     awards?.map(a=> (
                         <div className="flex gap-2 p-2 border rounded my-2 shadow h-fit" key={a.title}>
@@ -504,9 +511,6 @@ const Home = () => {
                         </div>
                     ))
                 }
-                {isLoggedIn && (
-                    <button onClick={() => setIsAwardEditing(true)} className="edit">ADD</button>
-                )}
             </div>
         </div>
     );

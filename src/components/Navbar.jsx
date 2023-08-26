@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import scholar from "../images/scholar.png";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setValue } from '../redux/isLoggedIn';
 
 const Navbar = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn.value);
+  const dispatch = useDispatch();
   const [showSubmenu, setShowSubmenu] = useState(false);
-
+  const [isSticky, setIsSticky] = useState(false);
   const Links = [
     { name: "About Me", link: "/" },
     { name: "Research", link: "/research" },
@@ -28,6 +30,26 @@ const Navbar = () => {
   const [isMottoEditing, setIsMottoEditing] = useState(false);
   const [motto, setMotto] = useState();
 
+  const handleScroll = () => {
+    // console.log(window.scrollY)
+    if (window.scrollY === 0) {
+      setIsSticky(false);
+    } else {
+      setIsSticky(true);
+    }
+  };
+
+  const test = () => {
+    console.log(window.scrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -46,6 +68,11 @@ const Navbar = () => {
   const handleMotto = () => {
     setMotto(about?.motto);
     setIsMottoEditing(true);
+  };
+
+  const handleDownloadClick = () => {
+    const url = `https://drive.google.com/file/d/15huhSUMEz8b8W_tjPe2f1ioG3H69NfdV/view?usp=drive_link`;
+    window.open(url, "_blank");
   };
 
   const handleSaveClick = () => {
@@ -84,9 +111,34 @@ const Navbar = () => {
     setIsMottoEditing(false);
   };
 
+  const handleCV = () => {
+    const updateData = async () => {
+      try {
+        const response = await fetch("https://port.abirmunna.me/api/v1/cv", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ cv: "cv" }, null, 2),
+        });
+      } catch (error) {
+        console.log("Error updating data:", error);
+      }
+    };
+    // updateData();
+  };
+
+  const handleLogOut = () => {
+    dispatch(setValue(false));
+  }
+
   return (
     <div className="w-full">
-      <h1 className="text-3xl font-bold md:mx-24 mx-4 mt-4">{about?.name}</h1>
+      <div className="flex items-center justify-between lg:mx-24 mx-4 mt-4">
+        <h1 className="text-3xl font-bold pb-1">{about?.name}</h1>
+        {isLoggedIn && <button onClick={() => handleLogOut()} className="cancel font-semibold">Logout</button>}
+      </div>
+      
       {isMottoEditing ? (
         <div className="md:mx-24 mx-4 flex">
           <textarea
@@ -105,7 +157,7 @@ const Navbar = () => {
         </div>
       ) : (
         <div className="flex">
-          <p className="md:mx-24 mx-4">{about?.motto}</p>
+          <p className="lg:mx-24 mx-4">{about?.motto}</p>
           {isLoggedIn && (
             <button onClick={handleMotto} className="fas fa-edit"></button>
           )}
@@ -132,7 +184,7 @@ const Navbar = () => {
           </svg>
         </div>
         <div
-          className={`md:flex absolute md:static md:mt-0 mt-8 mx-2 md:mx-24 bg-indigo-950 md:z-auto z-[-1] left-0 w-48 md:w-auto md:pl-0 pl-6 transition-all duration-500 ease-in ${
+          className={`md:flex absolute md:static md:mt-0 mt-8 mx-2 lg:mx-24 bg-indigo-950 md:z-auto z-[-1] left-0 w-48 md:w-auto md:pl-0 pl-6 transition-all duration-500 ease-in ${
             open ? "-left-4 " : "left-[-250px]"
           }`}
         >
@@ -147,9 +199,10 @@ const Navbar = () => {
                 <li
                   className={`px-2 py-1 hover:text-teal-400 list-none duration-500 ${
                     location.pathname === link.link
-                      ? "text-teal-500"
+                      ? "text-teal-400"
                       : "text-white"
                   }`}
+                  onClick={() => setOpen(false)}
                 >
                   {link.name}
                 </li>
@@ -157,12 +210,12 @@ const Navbar = () => {
               {link.name === "Publications" && showSubmenu && (
                 <ul className="absolute left-0 top-8 z-10 w-32 px-2 bg-white shadow py-1">
                   {" "}
-                  {/* Add necessary styling */}
                   {link.submenu.map((submenuLink) => (
                     <li key={submenuLink.name}>
                       <Link
                         className="hover:text-teal-400"
                         to={submenuLink.link}
+                        onClick={() => setOpen(false)}
                       >
                         {submenuLink.name}
                       </Link>
@@ -172,39 +225,57 @@ const Navbar = () => {
               )}
             </div>
           ))}
+          <div
+            onClick={handleDownloadClick}
+            className="text-white font-semibold mt-1 pl-2 hover:text-teal-400 cursor-pointer"
+          >
+            Download CV
+            {isLoggedIn && (
+            <button onClick={handleCV} className="fas fa-edit pl-3 text-white hover:text-teal-400"></button>
+          )}
+          </div>
         </div>
-        <div className="flex text-white gap-2 h-full mt-2 absolute md:right-24 right-4">
+        <div className="flex text-white gap-2 h-full mt-2 absolute lg:right-24 right-4">
           <a
             href="https://scholar.google.com/citations?hl=en&user=UwwIXLUAAAAJ"
             title="Google Scholer"
+            className="hover:scale-125 ease duration-300"
           >
             <img className="h-5 w-5 -mt-0.5" src={scholar} alt="scholar" />
           </a>
           <a
             href="https://orcid.org/0000-0001-6940-364X"
             title="Orcid"
-            className="fab fa-orcid"
+            className="fab fa-orcid hover:scale-125 hover:mb-2 ease duration-300"
           >
             <span className="sr-only">Orcid</span>
           </a>
-          <a href="#" title="Publons" className="fa">
+          <a
+            href="#"
+            title="Publons"
+            className="fa hover:scale-125 hover:mb-2 ease duration-300"
+          >
             <b>P</b>
           </a>
           <a
             href="https://www.linkedin.com/in/mahbubalamicddrb/"
             title="LInkedin"
-            className="fab fa-linkedin-in"
+            className="fab fa-linkedin-in hover:scale-125 hover:mb-2 ease duration-300"
           ></a>
           <a
             href="https://twitter.com/mahbubicddrb"
             title="Twitter"
-            className="fab fa-twitter"
+            className="fab fa-twitter hover:scale-125 hover:mb-2 ease duration-300"
           ></a>
-          <a href="#" title="Instagram" className="fab fa-instagram"></a>
+          <a
+            href="#"
+            title="Instagram"
+            className="fab fa-instagram hover:scale-125 hover:mb-2 ease duration-300"
+          ></a>
           <a
             href="https://www.facebook.com/mahbubul.alam.79025"
             title="Facebook"
-            className="fab fa-facebook-f"
+            className="fab fa-facebook-f hover:scale-125 hover:mb-2 ease duration-300"
           ></a>
         </div>
       </div>

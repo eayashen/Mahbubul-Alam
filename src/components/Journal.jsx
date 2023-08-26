@@ -37,7 +37,7 @@ const Journal = () => {
     }
   };
 
-  const handleEdit = (id, research_id, title, published, authors) => {
+  const handleEdit = (id, research_id, title, published, authors, url) => {
     setTempJournal((prevData) => ({
       ...prevData,
       id,
@@ -45,6 +45,7 @@ const Journal = () => {
       title,
       published,
       authors,
+      url
     }));
     setIsJournalEditing(true);
   };
@@ -64,6 +65,7 @@ const Journal = () => {
               published: tempJournal?.published || "",
               authors: tempJournal?.authors || "",
               id: tempJournal?.id,
+              url: tempJournal?.url || "",
             },
             null,
             2
@@ -97,6 +99,7 @@ const Journal = () => {
               published: tempJournal?.published || "",
               authors: tempJournal?.authors || "",
               publications_type: tempJournal?.publications_type || "",
+              url: tempJournal?.url || "",
             },
             null,
             2
@@ -156,7 +159,7 @@ const Journal = () => {
     );
 
   return (
-    <div className="md:mx-24 mx-4">
+    <div className="lg:mx-24 mx-4">
       {isJournalEditing && (
         <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-25 z-10 flex justify-center items-center">
           <div className="w-96 h-fit p-4 bg-white text-black rounded space-y-4">
@@ -198,6 +201,18 @@ const Journal = () => {
                   }
                   placeholder="Description"
                   value={tempJournal?.authors}
+                />
+              </div>
+              <div className="flex">
+                <p className="w-20">Link</p>
+                <input
+                  className="px-2 border rounded flex-1"
+                  type="text"
+                  onChange={(e) =>
+                    setTempJournal({ ...tempJournal, url: e.target.value })
+                  }
+                  placeholder="https://example.com"
+                  value={tempJournal?.url}
                 />
               </div>
             </div>
@@ -279,6 +294,18 @@ const Journal = () => {
                   value={tempJournal?.authors || ""}
                 />
               </div>
+              <div className="flex">
+                <p className="w-20">Link</p>
+                <input
+                  className="px-2 border rounded flex-1"
+                  type="text"
+                  onChange={(e) =>
+                    setTempJournal({ ...tempJournal, url: e.target.value })
+                  }
+                  placeholder="https://example.com"
+                  value={tempJournal?.url || ""}
+                />
+              </div>
             </div>
             <div className="flex justify-center gap-4">
               <button className="save" onClick={handleJournalAdd}>
@@ -299,10 +326,10 @@ const Journal = () => {
       )}
       <p className="text-2xl font-bold text-center my-4">
         {pathname === "journal"
-          ? "JOURNAL ARTICALS"
+          ? "Journal Articals"
           : pathname === "working-paper"
-          ? "WORKING PAPER"
-          : "POLICY"}
+          ? "Working Papers"
+          : "Policy Briefs"}
       </p>
       {isLoggedIn && (
         <button className="edit" onClick={() => setAddPublication(true)}>
@@ -311,7 +338,7 @@ const Journal = () => {
       )}
       {journal?.map((item, index) => (
         <div key={index} className="my-4 border-b pb-2">
-          <p className="text-xl font-bold">{item.title}</p>
+          <a href={item.url} className="text-xl font-semibold hover:text-teal-500" target="_blank" rel="noopener noreferrer">{item.title}</a>
           <p className="text-md">{item.published}</p>
           <p className="text-sm">{item.authors}</p>
           {isLoggedIn && (
@@ -323,7 +350,8 @@ const Journal = () => {
                     item.research_id,
                     item.title,
                     item.published,
-                    item.authors
+                    item.authors,
+                    item.url
                   )
                 }
                 className="fas fa-edit"
@@ -337,7 +365,6 @@ const Journal = () => {
         </div>
       ))}
     </div>
-    //test
   );
 };
 
