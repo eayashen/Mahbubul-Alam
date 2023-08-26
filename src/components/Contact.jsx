@@ -81,7 +81,7 @@ const Contact = () => {
               className="p-1 rounded border outline-none max-w-full h-32 max-h-40 bg-gray-100"
               placeholder="Enter your message..."
             ></textarea>
-            <button className="save w-full">
+            <button className="save bg-indigo-950 hover:bg-indigo-950 hover:text-teal-300 w-full">
               SEND EMAIL
             </button>
           </div>
