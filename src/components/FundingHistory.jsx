@@ -193,12 +193,12 @@ const FundingHistory = () => {
                                 <input className='px-2 border rounded flex-1' type="text" onChange={e => setTableRow({...tableRow, awarded_amount: e.target.value})}  placeholder='Award' value={tableRow?.awarded_amount}/>
                             </div>
                             <div className="flex">
-                                <p className='w-24'>Time Period</p>
-                                <input className='px-2 border rounded flex-1' type="text" onChange={e => setTableRow({...tableRow, time_period: e.target.value})}  placeholder='Time Period' value={tableRow?.time_period}/>
+                                <p className='w-24'>Duration</p>
+                                <input className='px-2 border rounded flex-1' type="text" onChange={e => setTableRow({...tableRow, time_period: e.target.value})}  placeholder='Duration' value={tableRow?.time_period}/>
                             </div>
                             <div className="flex">
-                                <p className='w-24'>Doner</p>
-                                <input className='px-2 border rounded flex-1' type="text" onChange={e => setTableRow({...tableRow, doner: e.target.value})}  placeholder='Doner' value={tableRow?.doner}/>
+                                <p className='w-24'>Donar</p>
+                                <input className='px-2 border rounded flex-1' type="text" onChange={e => setTableRow({...tableRow, doner: e.target.value})}  placeholder='Donar' value={tableRow?.doner}/>
                             </div>
                         </div>
                         <div className="flex justify-center gap-4">
@@ -223,11 +223,11 @@ const FundingHistory = () => {
             <div className="my-4 overflow-x-auto">
                 <div className={`bg-indigo-950 text-white flex p-1 ${isLoggedIn ? 'min-w-[1096px]' : 'min-w-[1016px]'}`}>
                     <p className='w-10 px-1'>Year</p>
-                    <p className='flex-1 px-1'>Title</p>
+                    <p className='flex-1 px-4'>Title</p>
                     <p className='w-40 px-1'>Role</p>
-                    <p className='w-20 px-1'>Awarded</p>
-                    <p className='w-40 px-1'>Time Period</p>
-                    <p className='w-32 px-1'>Doner</p>
+                    <p className='w-20 px-1'>Awarded Amount($)</p>
+                    <p className='w-40 text-center px-1'>Duration</p>
+                    <p className='w-32 px-1'>Donar</p>
                     {isLoggedIn && (
                         <div className="w-20">Actions</div>
                     )}
@@ -239,7 +239,7 @@ const FundingHistory = () => {
                     data?.map(d => (
                         <div className={`flex border shadow p-1 my-2 ${isLoggedIn ? 'min-w-[1096px]' : 'min-w-[1016px]'}`} key={Math.random()}>
                             <p className='w-10 px-1'>{d.year}</p>
-                            <p className='flex-1 px-1'>{d.title}</p>
+                            <p className='flex-1 px-4'>{d.title}</p>
                             <p className='w-40 px-1'>{d.role}</p>
                             <p className='w-20 px-1'>${d.awarded_amount}</p>
                             <p className='w-40 px-1'>{d.time_period}</p>

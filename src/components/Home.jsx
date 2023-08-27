@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import img1 from '../images/123.jpg';
-import img2 from '../images/456.jpg';
-import img3 from '../images/789.jpg';
-import profile from '../images/pro_pic.jpg';
+import img0 from '../images/MAC0.jpeg';
+import img1 from '../images/MAC1.jpeg';
+// import img2 from '../images/MAC2.jpeg';
+// import img3 from '../images/MAC3.jpeg';
+import img4 from '../images/MAC4.jpeg';
+// import img5 from '../images/MAC5.jpeg';
+// import img6 from '../images/MAC6.jpeg';
+// import img7 from '../images/MAC7.jpeg';
+import profile from '../images/Mahbub Ul Alam_2023.JPG';
 import { useSelector } from 'react-redux';
 import { Triangle } from "react-loader-spinner";
 
@@ -467,15 +472,15 @@ const Home = () => {
                     )}
                     <Carousel selectedItem={activeIndex} onChange={setActiveIndex}>
                         <div>
+                            <img src={img0} alt="Image 0" />
+                            {/*<p className="legend">Caption 0</p> */}
+                        </div>
+                        <div>
                             <img src={img1} alt="Image 1" />
                             {/* <p className="legend">Caption 1</p> */}
                         </div>
                         <div>
-                            <img src={img2} alt="Image 2" />
-                            {/* <p className="legend">Caption 2</p> */}
-                        </div>
-                        <div>
-                            <img src={img3} alt="Image 3" />
+                            <img src={img4} alt="Image 4" />
                             {/* <p className="legend">Caption 3</p> */}
                         </div>
                     </Carousel>
