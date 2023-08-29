@@ -288,7 +288,7 @@ const Research = () => {
     <div className="lg:mx-24 mx-4">
       {isResearchTitleEditing && (
         <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-25 z-10 flex justify-center items-center">
-          <div className="w-96 h-fit p-4 bg-white text-black rounded space-y-4">
+          <div className="sm:w-[600px] w-96 h-fit p-4 bg-white text-black rounded space-y-4">
             <div className="space-y-2">
               <div className="flex">
                 <p className="w-20">Status</p>
@@ -309,8 +309,8 @@ const Research = () => {
               </div>
               <div className="flex">
                 <p className="w-20">Title</p>
-                <input
-                  className="px-2 border rounded flex-1"
+                <textarea
+                  className="px-2 border rounded flex-1 max-h-32 h-20"
                   type="text"
                   onChange={(e) =>
                     setResearchTitle({
@@ -324,8 +324,8 @@ const Research = () => {
               </div>
               <div className="flex">
                 <p className="w-20">Description</p>
-                <input
-                  className="px-2 border rounded flex-1"
+                <textarea
+                  className="px-2 border rounded flex-1 max-h-60 h-40"
                   type="text"
                   onChange={(e) =>
                     setResearchTitle({
@@ -456,7 +456,7 @@ const Research = () => {
           d.status === "onGoing" && (
             <div className="my-4" key={d.id}>
               <p className="text-lg font-semibold">{d.title}</p>
-              <p className="">{d.description}</p>
+              <p className="whitespace-pre-line">{d.description}</p>
               {isLoggedIn && (
                 <div className="flex gap-4">
                   <button
@@ -525,7 +525,7 @@ const Research = () => {
           d.status === "previousResearch" && (
             <div className="my-4" key={d.id}>
               <p className="text-lg font-semibold">{d.title}</p>
-              <p className="">{d.description}</p>
+              <p className="whitespace-pre-line">{d.description}</p>
               {isLoggedIn && (
                 <div className="flex gap-4">
                   <button

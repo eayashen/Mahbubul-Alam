@@ -221,7 +221,11 @@ const Navbar = () => {
                       ? "text-teal-400"
                       : "text-white"
                   }`}
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    if (link.name !== "Publications") {
+                      setOpen(false);
+                    }
+                  }}
                 >
                   {link.name}
                 </li>
