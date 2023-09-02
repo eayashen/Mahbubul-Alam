@@ -28,3 +28,32 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* .slick-arrows {
+  margin: -10px;
+  z-index: 10;
+} */
+
+.slick-prev {
+  margin-left: 30px;
+  scale: 1.5;
+  z-index: 10;
+}
+
+.slick-next {
+  margin-right: 30px;
+  scale: 1.5;
+  z-index: 10;
+}
+
+.image-container {
+  padding: 2px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
