@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import scholar from "../images/scholar.png";
 import { useSelector, useDispatch } from "react-redux";
-import { setValue } from '../redux/isLoggedIn';
-import cv from '../CV of Mahbub-Ul Alam_31 Jan 2023.pdf';
+import { setValue } from "../redux/isLoggedIn";
+import cv from "../CV of Mahbub-Ul Alam_31 Jan 2023.pdf";
 
 const Navbar = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn.value);
@@ -11,7 +11,7 @@ const Navbar = () => {
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [PDFEditing, setPDFEditing] = useState(false);
-  const [PDF, setPDF] = useState(false);
+  const [CV, setCV] = useState(null);
   const Links = [
     { name: "About Me", link: "/" },
     { name: "Research", link: "/research" },
@@ -55,6 +55,7 @@ const Navbar = () => {
 
   useEffect(() => {
     fetchData();
+    fetchCV();
   }, []);
 
   const fetchData = async () => {
@@ -68,6 +69,25 @@ const Navbar = () => {
     }
   };
 
+  const fetchCV = async () => {
+    try {
+      const response = await fetch(
+        "https://port.abirmunna.me/api/v1/cv/uploads/cv.pdf"
+      );
+
+      if (!response.ok) {
+        console.log("Error fetching data");
+      }
+
+      const pdfBlob = await response.blob();
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      setCV(pdfUrl);
+    } catch (error) {
+      console.log("Error fetching data:", error);
+      // setLoading(false);
+    }
+  };
+
   const handleMotto = () => {
     setMotto(about?.motto);
     setIsMottoEditing(true);
@@ -75,7 +95,7 @@ const Navbar = () => {
 
   const handleDownloadClick = () => {
     // const url = `https://drive.google.com/file/d/15huhSUMEz8b8W_tjPe2f1ioG3H69NfdV/view?usp=drive_link`;
-    window.open(cv, "_blank");
+    window.open(CV, "_blank");
   };
 
   const handleSaveClick = () => {
@@ -115,49 +135,83 @@ const Navbar = () => {
   };
 
   const handleSaveCV = () => {
-    const updateData = async () => {
-      try {
-        const response = await fetch("https://port.abirmunna.me/api/v1/cv", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ cv: "cv" }, null, 2),
-        });
-      } catch (error) {
-        console.log("Error updating data:", error);
-      }
+    //api call
+    const apiUrl = "https://port.abirmunna.me/api/v1/cv/uploads";
+
+    if (!CV) {
+      console.error("No pdf selected");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", CV, "cv.pdf");
+
+    const headers = {
+      Accept: "application/json",
+      // "Content-Type": "application/pdf",
     };
-    // updateData();
-    setPDFEditing(false)
+
+    const requestOptions = {
+      method: "POST",
+      headers,
+      body: formData,
+    };
+
+    fetch(apiUrl, requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          fetchCV();
+          console.log("PDF  uploaded successfully");
+        } else {
+          console.error("PDF  upload failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Error while uploading PDF :", error);
+      });
+    setCV(null);
+    setPDFEditing(false);
   };
 
   const handleLogOut = () => {
     dispatch(setValue(false));
-  }
+  };
 
   return (
     <div className="w-full">
       {PDFEditing && (
-                <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-25 z-10 flex justify-center items-center">
-                    <div className="w-96 h-fit p-4 bg-white text-black rounded space-y-4">
-                        <input type="file" onChange={e => setPDF(e.target.value)}/>
-                        <div className="flex justify-center gap-4">
-                            <button className="bg-blue-400 rounded px-4 py-1 text-white hover:bg-blue-500" onClick={handleSaveCV}>
-                                Save
-                            </button>
-                            <button className="bg-red-400 rounded px-4 py-1 text-white hover:bg-red-500" onClick={() => setPDFEditing(false)}>
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+        <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-25 z-10 flex justify-center items-center">
+          <div className="w-96 h-fit p-4 bg-white text-black rounded space-y-4">
+            <input type="file" onChange={(e) => setCV(e.target.files[0])} />
+            <div className="flex justify-center gap-4">
+              <button
+                className="bg-blue-400 rounded px-4 py-1 text-white hover:bg-blue-500"
+                onClick={handleSaveCV}
+              >
+                Save
+              </button>
+              <button
+                className="bg-red-400 rounded px-4 py-1 text-white hover:bg-red-500"
+                onClick={() => setPDFEditing(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex items-center justify-between lg:mx-24 mx-4 mt-4">
         <h1 className="text-3xl font-bold pb-1">{about?.name}</h1>
-        {isLoggedIn && <button onClick={() => handleLogOut()} className="cancel font-semibold">Logout</button>}
+        {isLoggedIn && (
+          <button
+            onClick={() => handleLogOut()}
+            className="cancel font-semibold"
+          >
+            Logout
+          </button>
+        )}
       </div>
-      
+
       {isMottoEditing ? (
         <div className="md:mx-24 mx-4 flex">
           <textarea
@@ -248,13 +302,16 @@ const Navbar = () => {
               )}
             </div>
           ))}
-          <div
-            className="text-white font-semibold mt-1 pl-2 hover:text-teal-400 cursor-pointer flex"
-          >
-            <p onClick={handleDownloadClick} >CV</p>
+          <div className="text-white font-semibold mt-1 pl-2 cursor-pointer flex">
+            <p className="hover:text-teal-400" onClick={handleDownloadClick}>
+              CV
+            </p>
             {isLoggedIn && (
-            <button onClick={() => setPDFEditing(true)} className="fas fa-edit pl-3 text-white hover:text-teal-400"></button>
-          )}
+              <button
+                onClick={() => setPDFEditing(true)}
+                className="fas fa-edit pl-3 text-white hover:text-teal-400 pb-1"
+              ></button>
+            )}
           </div>
         </div>
         <div className="flex text-white gap-2 h-full mt-2 absolute lg:right-24 right-4">

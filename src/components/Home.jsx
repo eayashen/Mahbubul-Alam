@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import img1 from "../images/123.jpg";
-import img2 from "../images/456.jpg";
-import img3 from "../images/789.jpg";
+import award_logo from "../images/award_logo.png";
+import Slider from "react-slick";
 import { useSelector } from "react-redux";
 import { Triangle } from "react-loader-spinner";
+import MAC0 from "../images/MAC0.jpeg";
+import MAC1 from "../images/MAC1.jpeg";
+import MAC2 from "../images/MAC2.jpeg";
+import MAC3 from "../images/MAC3.jpeg";
+import MAC4 from "../images/MAC4.jpeg";
+import MAC5 from "../images/MAC5.jpeg";
+import MAC6 from "../images/MAC6.jpeg";
+import MAC7 from "../images/MAC7.jpeg";
 
 const Home = () => {
   const [about, setAbout] = useState();
@@ -15,12 +21,25 @@ const Home = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn.value);
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState();
+  const [images, setImages] = useState([MAC0, MAC1, MAC2, MAC3, MAC4, MAC5, MAC6, MAC7]);
+  const settings = {
+    dots: true,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    infinite: true,
+    speed: 1000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    adaptiveHeight: true,
+  };
+  const regex = /\b\d{4}\b/g;
 
   useEffect(() => {
     fetchData();
     fetchDesignation();
     fetchAwards();
     fetchProfileImage();
+    // fetchAwardImage();
   }, []);
 
   const fetchData = async () => {
@@ -343,17 +362,17 @@ const Home = () => {
     deleteAward();
   };
 
-  const [activeIndex, setActiveIndex] = useState(0);
+  // const [activeIndex, setActiveIndex] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % 3);
-    }, 3000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setActiveIndex((prevIndex) => (prevIndex + 1) % 3);
+  //   }, 5000);
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -420,6 +439,48 @@ const Home = () => {
         />
       </div>
     );
+
+  // const fetchAwardImage = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       "https://port.abirmunna.me/api/v1/image/get_all"
+  //     );
+  //     const jsonData = await response.json();
+  //     if (response.ok) {
+  //       try {
+  //         const filteredStrings = jsonData.filter((str) =>
+  //           str.startsWith("test")
+  //         );
+
+  //         // Create an async function to fetch and set images
+  //         const fetchAndSetImages = async () => {
+  //           for (const img of filteredStrings) {
+  //             const response = await fetch(
+  //               `https://port.abirmunna.me/api/v1/image/uploads/${img}`
+  //             );
+
+  //             if (!response.ok) {
+  //               throw new Error(`Failed to fetch image: ${img}`);
+  //             }
+
+  //             const imageBlob = await response.blob(); // Get image as Blob
+  //             const imageSrc = URL.createObjectURL(imageBlob); // Create image URL
+  //             setImages((images) => [...images, imageSrc]);
+  //           }
+  //         };
+
+  //         fetchAndSetImages().catch((error) => {
+  //           console.error("Error fetching profile image:", error);
+  //         });
+  //       } catch (error) {
+  //         console.error("Error filtering images:", error);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching profile image:", error);
+  //     return null;
+  //   }
+  // };
 
   return (
     <div className="mt-4 lg:mx-24 mx-4">
@@ -573,7 +634,7 @@ const Home = () => {
           <div className="text-center">
             <p className="font-bold text-xl">{about?.name}</p>
             {isLoggedIn && (
-              <button onClick={() => setIsBioEditing(true)} className="edit">
+              <button onClick={() => setIsBioEditing(true)} className="save">
                 + Add Designation
               </button>
             )}
@@ -608,7 +669,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="flex-1">
+        <div className="flex-1 overflow-hidden">
           {isEditing ? (
             <div className="w-full">
               <textarea
@@ -631,7 +692,9 @@ const Home = () => {
             </div>
           ) : (
             <div>
-              <p className="text-justify mb-4 whitespace-pre-line">{about?.bio}</p>
+              <p className="text-justify mb-4 whitespace-pre-line">
+                {about?.bio}
+              </p>
               {isLoggedIn && (
                 <button
                   className="save border px-4 py-1 mb-4 rounded"
@@ -642,23 +705,17 @@ const Home = () => {
               )}
             </div>
           )}
-          <Carousel selectedItem={activeIndex} onChange={setActiveIndex}>
-            <div>
-              <img src={img1} alt="Image 1" />
-              {/* <p className="legend">Caption 1</p> */}
-            </div>
-            <div>
-              <img src={img2} alt="Image 2" />
-              {/* <p className="legend">Caption 2</p> */}
-            </div>
-            <div>
-              <img src={img3} alt="Image 3" />
-              {/* <p className="legend">Caption 3</p> */}
-            </div>
-          </Carousel>
-          <div>
-            <div className="flex"></div>
+
+          <div className="w-full overflow-hidden pb-10">
+            <Slider {...settings}>
+              {images?.map((img, index) => (
+                <div key={index} className="image-container border-4 border-indigo-950">
+                  <img src={img} alt="Certificate" />
+                </div>
+              ))}
+            </Slider>
           </div>
+
           {isLoggedIn && (
             <button onClick={handleCarouselImage} className="edit">
               + Add Pictures
@@ -666,6 +723,8 @@ const Home = () => {
           )}
         </div>
       </div>
+
+      {/* ----------------------- Award Section --------------------- */}
       <div>
         <p className="w-full text-center py-1 bg-indigo-950 text-white font-semibold mt-4">
           Awards
@@ -680,10 +739,11 @@ const Home = () => {
             className="flex gap-2 p-2 border rounded my-2 shadow h-fit"
             key={a.title}
           >
-            <div className="w-28 h-20">
-              <img src="" alt="" className="w-full h-full object-fit" />
+            <div className="w-28 h-20 flex items-center justify-center relative">
+              <p className="absolute z-10 font-semibold text-indigo-950">{(a.year.match(regex)[0])}</p>
+              <img src={award_logo} alt="" className="w-4/5 h-4/5 object-cover" />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 pl-4">
               <p className="font-semibold text-md">{a.title}</p>
               <p>{a.year}</p>
             </div>
