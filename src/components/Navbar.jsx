@@ -4,6 +4,7 @@ import scholar from "../images/scholar.png";
 import { useSelector, useDispatch } from "react-redux";
 import { setValue } from "../redux/isLoggedIn";
 import cv from "../CV of Mahbub-Ul Alam_31 Jan 2023.pdf";
+import { Tooltip, Button } from "@material-tailwind/react";
 
 const Navbar = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn.value);
@@ -315,47 +316,61 @@ const Navbar = () => {
           </div>
         </div>
         <div className="flex text-white gap-2 h-full mt-2 absolute lg:right-24 right-4">
+        <Tooltip className=" bg-teal-400 " content="Google Scholer">
           <a
+          target="_blank"
             href="https://scholar.google.com/citations?hl=en&user=UwwIXLUAAAAJ"
-            title="Google Scholer"
             className="hover:scale-125 ease duration-300"
           >
             <img className="h-5 w-5 -mt-0.5" src={scholar} alt="scholar" />
           </a>
+          </Tooltip>
+          <Tooltip className=" bg-teal-400"content="Orcid">
           <a
+          target="_blank"
             href="https://orcid.org/0000-0001-6940-364X"
-            title="Orcid"
             className="fab fa-orcid hover:scale-125 hover:mb-2 ease duration-300"
           >
             <span className="sr-only">Orcid</span>
           </a>
+          </Tooltip>
+          <Tooltip className=" bg-teal-400 "content="Publons">
           <a
+          target="_blank"
             href="#"
-            title="Publons"
             className="fa hover:scale-125 hover:mb-2 ease duration-300"
           >
             <b>P</b>
           </a>
+          </Tooltip>
+          <Tooltip className=" bg-teal-400 mb-16"content="Linkedin">
           <a
+          target="_blank"
             href="https://www.linkedin.com/in/mahbubalamicddrb/"
-            title="LInkedin"
             className="fab fa-linkedin-in hover:scale-125 hover:mb-2 ease duration-300"
           ></a>
+          </Tooltip>
+          <Tooltip className=" bg-teal-400 mb-16"content="Twitter">
           <a
+          target="_blank"
             href="https://twitter.com/mahbubicddrb"
-            title="Twitter"
             className="fab fa-twitter hover:scale-125 hover:mb-2 ease duration-300"
           ></a>
+          </Tooltip>
+          <Tooltip className=" bg-teal-400 mb-16"content="Instagram">
           <a
+          target="_blank"
             href="#"
-            title="Instagram"
             className="fab fa-instagram hover:scale-125 hover:mb-2 ease duration-300"
-          ></a>
+          ></a>  
+          </Tooltip>
+          <Tooltip className=" bg-teal-400 mb-16"content="Facebook">
           <a
+          target="_blank"
             href="https://www.facebook.com/mahbubul.alam.79025"
-            title="Facebook"
             className="fab fa-facebook-f hover:scale-125 hover:mb-2 ease duration-300"
           ></a>
+          </Tooltip>
         </div>
       </div>
     </div>

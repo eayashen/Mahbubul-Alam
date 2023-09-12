@@ -12,6 +12,7 @@ import MAC4 from "../images/MAC4.jpeg";
 // import MAC5 from "../images/MAC5.jpeg";
 import MAC6 from "../images/MAC6.jpeg";
 import MAC7 from "../images/MAC7.jpeg";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [about, setAbout] = useState();
@@ -21,6 +22,7 @@ const Home = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn.value);
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState();
+  const [journal, setJournal] = useState([]);
   const [images, setImages] = useState([MAC0, MAC1, MAC2, MAC3, MAC4, MAC6, MAC7]);
   const settings = {
     dots: true,
@@ -39,8 +41,25 @@ const Home = () => {
     fetchDesignation();
     fetchAwards();
     fetchProfileImage();
+    fetchJournal();
     // fetchAwardImage();
   }, []);
+
+  const fetchJournal = async () => {
+    try {
+      const response = await fetch(
+        "https://port.abirmunna.me/api/v1/publications"
+      );
+      const data = await response.json();
+
+      // Simulate some delay to see the loading state in action
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      setJournal(data.filter((item) => item.publications_type === "journal"));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -762,7 +781,23 @@ const Home = () => {
           </div>
         ))}
       </div>
+      <p className="mt-6 font-semibold text-left bg-indigo-950 text-white py-1 pl-2 my-4">
+        Recent Publications...
+      </p>
+      {journal?.map((item, index) => (
+        index < 3 && <div key={index} className="my-4 border-b pb-2">
+          <a href={item.url} className="text-xl font-semibold hover:text-teal-500" target="_blank" rel="noopener noreferrer">{item.title}</a>
+          <p className="text-md">{item.published}</p>
+          <p className="text-sm">{item.authors}</p>
+        </div>
+      ))}
+      <Link style={{ marginTop: "-10px" }}
+      // onMouseEnter={(e) => (e.target.style.color = "green")}
+      // onMouseLeave={(e) => (e.target.style.color = "blue")}
+      target="_blank" to="/journal" className="text-indigo-950 float-right hover:text-teal-500 font-bold mb-2">see more publications...</Link>
     </div>
+    
+    
   );
 };
 
