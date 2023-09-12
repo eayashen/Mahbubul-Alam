@@ -794,7 +794,7 @@ const Home = () => {
       <Link style={{ marginTop: "-10px" }}
       // onMouseEnter={(e) => (e.target.style.color = "green")}
       // onMouseLeave={(e) => (e.target.style.color = "blue")}
-      target="_blank" to="/journal" className="text-indigo-950 float-right hover:text-teal-500 font-bold mb-2">see more publications...</Link>
+      to="/journal" className="text-indigo-950 float-right hover:text-teal-500 font-bold mb-2">see more publications...</Link>
     </div>
     
     

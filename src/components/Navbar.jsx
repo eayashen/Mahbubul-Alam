@@ -316,7 +316,7 @@ const Navbar = () => {
           </div>
         </div>
         <div className="flex text-white gap-2 h-full mt-2 absolute lg:right-24 right-4">
-        <Tooltip className=" bg-teal-400 " content="Google Scholer">
+        <Tooltip className=" bg-teal-400 px-2 " content="Google Scholer">
           <a
           target="_blank"
             href="https://scholar.google.com/citations?hl=en&user=UwwIXLUAAAAJ"
@@ -325,7 +325,7 @@ const Navbar = () => {
             <img className="h-5 w-5 -mt-0.5" src={scholar} alt="scholar" />
           </a>
           </Tooltip>
-          <Tooltip className=" bg-teal-400"content="Orcid">
+          <Tooltip className=" bg-teal-400 px-2 "content="Orcid">
           <a
           target="_blank"
             href="https://orcid.org/0000-0001-6940-364X"
@@ -334,7 +334,7 @@ const Navbar = () => {
             <span className="sr-only">Orcid</span>
           </a>
           </Tooltip>
-          <Tooltip className=" bg-teal-400 "content="Publons">
+          <Tooltip className=" bg-teal-400 px-2 "content="Publons">
           <a
           target="_blank"
             href="#"
@@ -343,28 +343,28 @@ const Navbar = () => {
             <b>P</b>
           </a>
           </Tooltip>
-          <Tooltip className=" bg-teal-400 mb-16"content="Linkedin">
+          <Tooltip className=" bg-teal-400 px-2 "content="Linkedin">
           <a
           target="_blank"
             href="https://www.linkedin.com/in/mahbubalamicddrb/"
             className="fab fa-linkedin-in hover:scale-125 hover:mb-2 ease duration-300"
           ></a>
           </Tooltip>
-          <Tooltip className=" bg-teal-400 mb-16"content="Twitter">
+          <Tooltip className=" bg-teal-400 px-2 "content="Twitter">
           <a
           target="_blank"
             href="https://twitter.com/mahbubicddrb"
             className="fab fa-twitter hover:scale-125 hover:mb-2 ease duration-300"
           ></a>
           </Tooltip>
-          <Tooltip className=" bg-teal-400 mb-16"content="Instagram">
+          <Tooltip className=" bg-teal-400 px-2 "content="Instagram">
           <a
           target="_blank"
             href="#"
             className="fab fa-instagram hover:scale-125 hover:mb-2 ease duration-300"
           ></a>  
           </Tooltip>
-          <Tooltip className=" bg-teal-400 mb-16"content="Facebook">
+          <Tooltip className=" bg-teal-400 px-2 "content="Facebook">
           <a
           target="_blank"
             href="https://www.facebook.com/mahbubul.alam.79025"
