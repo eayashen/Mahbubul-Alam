@@ -9,10 +9,6 @@ const Contact = () => {
           <div className="flex-1 flex flex-col p-6 space-y-5">
             <p className="text-2xl font-bold">Contact Info</p>
             <div className="flex items-center gap-2 text-lg">
-              <i class="fas fa-solid fa-phone"></i>
-              <p>+880 1818-585465</p>
-            </div>
-            <div className="flex items-center gap-2 text-lg">
               <i class="fas fa-regular fa-envelope"></i>
               <p>mahbub@icddrb.org</p>
             </div>
